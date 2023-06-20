@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign up</title>
+</head>
+<body>
+    <%- include('header.ejs')%>
+    <%= "hello!!!!!!!"%>
+    <h1>Sign Up here!</h1>
+
+    <form action="/signup" method="POST">
+        <div>
+            <label for="email">Email</label> 
+            <input type="email" id="email" name="email">
+        </div>
+        <%if(locals.emailError){%>
+            <p style="color: orangered;"> <%=locals.emailError%> </p>
+        <%}%>
+        <div>
+            <label for="fullname">Full Name</label>
+            <input type="text" name="fullname" id="fullname">
+        </div>
+        <div>
+            <label for="phone">Phone</label>
+            <input type="text" name="phone" id="phone" value="+254">
+        </div>
+        <div>
+            <label for="yob">Year of Birth</label>
+            <select name="yob" id="yob">
+               
+                <% for(let year = 2007; year > 1940; year--){ %>
+                    <option value="<%=year%>"><%=year%></option>
+                <%}%>
+                                
+            </select>
+            
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password">
+        </div>
+        <div>
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" name="confirmPassword" id="confirmPassword">
+        </div>
+        <%if(locals.passwordError){%>
+            <p style="color: orangered;"> <%=locals.passwordError%> </p>
+        <%}%>
+
+        <input type="submit" value="sign up">
+    </form>
+    
+</body>
+</html>
