@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dawa App</title>
+  </head>
+  <body>
+    <%- include('header.ejs')%>
+
+    <form action="/drugs" method="GET">
+      <input type="text" name="search" id="search" />
+      <input type="submit" value="search" />
+    </form>
+
+    <h1>Reliable Medicine Store one click away!</h1>
+    <% if(locals.searchterm){ %>
+    <h2>Search Results for: <%=locals.searchterm%></h2>
+    <%}%>
+
+    <div class="drugs">
+      <% locals.drugs.forEach(drug=>{%>
+      <div class="drug">
+        <p><%=drug.description%></p>
+        <h3><%=drug.name%></h3>
+        <h4>KSH. <%= drug.price %></h4>
+      </div>
+
+      <%})%>
+
+      <style>
+        .drugs {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 20px;
+        }
+        .drug {
+          padding: 16px;
+          width: 30%;
+          border: 1px solid black;
+          border-radius: 6px;
+        }
+      </style>
+    </div>
+  </body>
+</html>
