@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>reviews</title>
+  </head>
+  <body>
+    <h1>Make a review</h1>
+
+    <%if(locals.successMessage){%>
+    <h3><%= locals.successMessage%></h3>
+    <%}%>
+
+    <form action="/review" method="post">
+      <textarea name="message" id="message" cols="30" rows="10"></textarea>
+      <br />
+      <input type="submit" value="submit review" />
+    </form>
+  </body>
+</html>

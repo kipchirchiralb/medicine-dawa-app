@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <style>
+        table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+    </style>
+</head>
+<body>
+    
+    <form action="/newdrug" method="POST" enctype="multipart/form-data">
+        Name: <input type="text" name="name" id="name"> <br>
+        Descritption: <textarea name="desc" id="desc" cols="30" rows="10"></textarea> <br>
+        Price: <input type="number" name="price" id="price"> <br>
+        Package: <input type="text" name="package" id="package"> <br>
+        Count: <input type="number" name="count" id="count"> <br>
+        Image: <input type="file" name="brown" id="image"> <br>
+        <input type="submit" value="Add Drug">
+    </form>
+
+    <table>
+        <tr>
+            <th>Drug Id</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Package</th>
+            <th>Count</th>
+            <th>Image</th>
+        </tr>
+
+        <% drugs.forEach(drug=>{  %>
+            <tr>
+                <td><%= drug.drug_id %></td>
+                <td><%= drug.name %></td>
+                <td><%= drug.price %></td>
+                <td><%= drug.package %></td>
+                <td><%= drug.count %></td>
+                <td><img src="images/<%= drug.imagelink%>" alt="<%=drug.name%>" width="30px" height="30px" ></td>
+            </tr>
+
+            <%})%>
+
+    </table>
+
+
+
+</body>
+</html>

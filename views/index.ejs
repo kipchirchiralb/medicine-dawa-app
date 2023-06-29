@@ -1,16 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dawa App</title>
-</head>
-<body>
-    
+  </head>
+  <body>
     <%- include('header.ejs')%>
     <h1>Reliable Medicine Store one click away!</h1>
 
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat vero possimus voluptates blanditiis dolor. Libero accusamus quos ducimus voluptatem et omnis dolorum cupiditate pariatur, deleniti, ipsa, culpa at architecto placeat?</p>
-
-</body>
+    <p>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat vero
+      possimus voluptates blanditiis dolor. Libero accusamus quos ducimus
+      voluptatem et omnis dolorum cupiditate pariatur, deleniti, ipsa, culpa at
+      architecto placeat?
+    </p>
+    <div class="reviews" style="display: flex; flex-wrap: wrap">
+      <%for(let i = 0; i<3; i++){%>
+      <div style="border: 1px solid; padding: 10px; width: 30%">
+        <p><%= locals.reviews[i].message%></p>
+        <p style="font-weight: bold"><%= locals.reviews[i].name%></p>
+      </div>
+      <%}%>
+    </div>
+    <a href="/review">Make your own review</a>
+  </body>
 </html>

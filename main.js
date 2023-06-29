@@ -11,6 +11,9 @@ const conn = mysql.createConnection({
 });
 const bcrypt = require("bcrypt");
 const saltRounds = 8;
+const multer = require("multer")
+const upload = multer({dest: "public/images"})
+
 const app = express(); // creating an server app
 // middleware
 // app.use(function (req,res,next){
@@ -18,6 +21,7 @@ const app = express(); // creating an server app
 //     next()
 // })
 app.use(express.urlencoded({ extended: false })); // req.body
+app.use(express.static("public"))
 app.use(
   expressSession({
     secret: "secret word",
@@ -37,8 +41,34 @@ app.use((req, res, next) => {
 
 //define routes/endpoints
 app.get("/", (req, res) => {
-  res.render("index.ejs");
+  if(req.session.user && req.session.user.email === "admin@madawa.com"){
+    conn.query("SELECT * FROM drugs ORDER BY drug_id DESC", (err, drugs)=>{
+      // check for server error
+      res.render("admin.ejs", {drugs: drugs})
+    })    
+  }else{
+      conn.query(
+        "SELECT * FROM reviews JOIN users ON reviews.user_id = users.email ORDER BY review_id DESC",
+        (err, reviews) => {
+          if (err) {
+            res.render(err);
+          } else {
+            res.render("index.ejs", { reviews: reviews });
+          }
+        }
+      );
+  }
 });
+
+
+app.post("/newdrug", upload.single("brown"), (req,res)=>{
+  conn.query("INSERT INTO drugs (name,description,price,package,count,imagelink) VALUES(?,?,?,?,?,?)", [req.body.name, req.body.desc,req.body.price,req.body.package,req.body.count, req.file.filename], (err)=>{
+    //check server error
+    res.redirect("/")
+  })  
+})
+
+
 app.get("/signup", (req, res) => {
   if (req.session.user) {
     res.redirect("/");
@@ -132,10 +162,10 @@ app.get("/logout", (req, res) => {
 app.get("/drugs", (req, res) => {
   if (req.query.search) {
     conn.query(
-      "SELECT * FROM drugs WHERE name = ? OR description=?",
-      [req.query.search, req.query.search],
+      `SELECT * FROM drugs WHERE name LIKE '%${req.query.search}%' OR description LIKE '%${req.query.search}%'`,
       (err, drugs) => {
         // check db error
+        console.log(drugs);
         res.render("drugs.ejs", { drugs: drugs, searchterm: req.query.search });
       }
     );
@@ -144,6 +174,28 @@ app.get("/drugs", (req, res) => {
       // check db error
       res.render("drugs.ejs", { drugs: drugs });
     });
+  }
+});
+
+app.get("/review", (req, res) => {
+  if (req.session.user) {
+    res.render("review.ejs");
+  } else {
+    res.redirect("/login");
+  }
+});
+app.post("/review", (req, res) => {
+  if (req.session.user) {
+    conn.query(
+      "INSERT INTO reviews(user_id, message) VALUES(?,?)",
+      [req.session.user.email, req.body.message],
+      (err) => {
+        // check for server error
+        res.render("review.ejs", { successMessage: "Review recieved" });
+      }
+    );
+  } else {
+    res.redirect("/login");
   }
 });
 
